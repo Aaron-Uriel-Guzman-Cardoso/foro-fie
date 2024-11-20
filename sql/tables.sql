@@ -1,0 +1,56 @@
+CREATE OR REPLACE DATABASE "foro_fie"
+CHARACTER SET = utf8
+COLLATE = uca1400_spanish_nopad_ai_ci;
+
+USE "foro_fie";
+
+SET SQL_MODE="STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,ANSI_QUOTES,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY";
+
+CREATE OR REPLACE TABLE "account_status" (
+    "id" TINYINT UNSIGNED,
+    "name" VARCHAR(32) NOT NULL
+    PRIMARY KEY ("id")
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "account" (
+    "id" INTEGER UNSIGNED AUTO_INCREMENT,
+    "nickname" VARCHAR(64) NOT NULL,
+    "description" VARCHAR(256) NOT NULL,
+    "hash" BINARY(32) NOT NULL, 
+    "salt" BINARY(32) NOT NULL, -- Esta está por definir mejor
+    "status" TINYINT UNSIGNED NOT NULL,
+    "privilege" TINYINT UNSIGNED NOT NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("status") REFERENCES "account_status" ("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY ("privilege") REFERENCES "privilege"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "student" (
+    "id" VARCHAR(8),
+    "first_name" VARCHAR(256) NOT NULL,
+    "last_name" VARCHAR(256) NOT NULL,
+    "account" INTEGER UNSIGNED,
+    UNIQUE ("account"),
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("account") REFERENCES "account"("id")
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "post" (
+    "id" INTEGER UNSIGNED,
+    "account" INTEGER UNSIGNED NOT NULL,
+    "title" TEXT (128) NOT NULL,
+    "content" TEXT NOT NULL,
+    "category" INTEGER UNSIGNED NOT NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("account") REFERENCES "account" ("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE privilege (
+    
+) WITH SYSTEM VERSIONING;
