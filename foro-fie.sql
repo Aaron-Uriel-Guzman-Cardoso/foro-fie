@@ -1,0 +1,162 @@
+CREATE DATABASE IF NOT EXISTS "foro_fie"
+CHARACTER SET utf8
+COLLATE uca1400_spanish_nopad_ai_ci;
+
+USE "foro_fie";
+
+SET SQL_MODE="STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,ANSI_QUOTES,NO_ZERO_IN_DATE,ONLY_FULL_GROUP_BY";
+
+CREATE OR REPLACE TABLE "account_status" (
+    "id" TINYINT UNSIGNED,
+    "name" VARCHAR(32) NOT NULL
+    PRIMARY KEY ("id")
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "account" (
+    "id" INTEGER UNSIGNED AUTO_INCREMENT,
+    "nickname" VARCHAR(64) NOT NULL,
+    "description" VARCHAR(256) NOT NULL,
+    "hash" BINARY(32) NOT NULL, 
+    "salt" BINARY(32) NOT NULL, -- Esta está por definir mejor
+    "status" TINYINT UNSIGNED NOT NULL,
+    "privilege" TINYINT UNSIGNED NOT NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("status") REFERENCES "account_status" ("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY ("privilege") REFERENCES "privilege"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Rango" (
+    "id" TINYINT UNSIGNED AUTO_INCREMENT,
+    "nombre" VARCHAR(64) NOT NULL UNIQUE,
+    PRIMARY KEY ("id")
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Privilegio" (
+    "id" INTEGER UNSIGNED AUTO_INCREMENT,
+    "nombre" VARCHAR(64) NOT NULL UNIQUE,
+    PRIMARY KEY ("id")
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Privilegio_Rango" (
+    "rango_id" TINYINT UNSIGNED NOT NULL,
+    "privilegio_id" INTEGER UNSIGNED NOT NULL,
+    PRIMARY KEY ("rango_id", "privilegio_id"),
+    FOREIGN KEY ("rango_id") REFERENCES "Rango"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY ("privilegio_id") REFERENCES "Privilegio"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Historial_Expulsion" (
+    "id" INTEGER UNSIGNED AUTO_INCREMENT,
+    "cuenta_id" INTEGER UNSIGNED NOT NULL,
+    "expulsion_id" TINYINT UNSIGNED NOT NULL,
+    "motivo" TEXT NOT NULL,
+    "fecha_inicio" DATE NOT NULL,
+    "fecha_final" DATE,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("cuenta_id") REFERENCES "Cuenta"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY ("expulsion_id") REFERENCES "Expulsion"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Expulsion" (
+    "id" TINYINT UNSIGNED AUTO_INCREMENT,
+    "nombre" VARCHAR(64) NOT NULL UNIQUE,
+    PRIMARY KEY ("id")
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "student" (
+    "id" VARCHAR(8),
+    "first_name" VARCHAR(256) NOT NULL,
+    "last_name" VARCHAR(256) NOT NULL,
+    "account" INTEGER UNSIGNED,
+    UNIQUE ("account"),
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("account") REFERENCES "account"("id")
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Alumno_Cuenta" (
+    "matricula" VARCHAR(8) NOT NULL,
+    "cuenta_id" INTEGER UNSIGNED NOT NULL,
+    UNIQUE ("matricula", "cuenta_id"),
+    FOREIGN KEY ("matricula") REFERENCES "Alumno"("matricula")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY ("cuenta_id") REFERENCES "Cuenta"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "post" (
+    "id" INTEGER UNSIGNED,
+    "account" INTEGER UNSIGNED NOT NULL,
+    "title" TEXT (128) NOT NULL,
+    "content" TEXT NOT NULL,
+    "category" INTEGER UNSIGNED NOT NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("account") REFERENCES "account" ("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Publicacion_Tag" (
+    "publicacion_id" INTEGER UNSIGNED NOT NULL,
+    "tag_id" INTEGER UNSIGNED NOT NULL,
+    PRIMARY KEY ("publicacion_id", "tag_id"),
+    FOREIGN KEY ("publicacion_id") REFERENCES "Publicacion"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY ("tag_id") REFERENCES "Tag"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Comentario" (
+    "id" INTEGER UNSIGNED AUTO_INCREMENT,
+    "publicacion_id" INTEGER UNSIGNED NOT NULL,
+    "cuenta_id" INTEGER UNSIGNED NOT NULL,
+    "fecha_comentario" DATE,
+    "contenido" TEXT NOT NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("publicacion_id") REFERENCES "Publicacion"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY ("cuenta_id") REFERENCES "Cuenta"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Respuesta" (
+    "id" INTEGER UNSIGNED AUTO_INCREMENT,
+    "comentario_id" INTEGER UNSIGNED NOT NULL,
+    "respuesta_a_id" INTEGER UNSIGNED NOT NULL,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("comentario_id") REFERENCES "Comentario"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY ("respuesta_a_id") REFERENCES "Comentario"("id")
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Tag" (
+    "id" INTEGER UNSIGNED AUTO_INCREMENT,
+    "nombre" VARCHAR(64) NOT NULL UNIQUE,
+    PRIMARY KEY ("id")
+) WITH SYSTEM VERSIONING;
+
+CREATE OR REPLACE TABLE "Categoria" (
+    "id" INTEGER UNSIGNED AUTO_INCREMENT,
+    "nombre" VARCHAR(64) NOT NULL UNIQUE,
+    PRIMARY KEY ("id")
+) WITH SYSTEM VERSIONING;
