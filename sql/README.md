@@ -1,2 +1,0 @@
-# foro.fie
-¡Hola! :D
