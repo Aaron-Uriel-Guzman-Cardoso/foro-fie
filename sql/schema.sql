@@ -14,6 +14,7 @@ CREATE OR REPLACE TABLE "student" (
     "id" VARCHAR(8),
     "first_name" VARCHAR(128) NOT NULL,
     "last_name" VARCHAR(128) NOT NULL,
+    "email" VARCHAR(256) NOT NULL,
     PRIMARY KEY ("id")
 ) WITH SYSTEM VERSIONING;
 
