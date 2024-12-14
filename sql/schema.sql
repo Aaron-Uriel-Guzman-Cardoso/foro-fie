@@ -11,14 +11,24 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 USE "foro_fie";
 
+CREATE OR REPLACE TABLE "group" (
+    "id" TINYINT UNSIGNED AUTO_INCREMENT,
+    "name" VARCHAR(64) NOT NULL UNIQUE,
+    PRIMARY KEY ("id")
+);
+
 CREATE OR REPLACE TABLE "account" (
     "id" INTEGER UNSIGNED AUTO_INCREMENT,
     "nickname" VARCHAR(64) NOT NULL,
     "desc" VARCHAR(256) NOT NULL,
     "hash" BINARY(32) NOT NULL, 
     "salt" BINARY(32) NOT NULL,
+    "group" TINYINT UNSIGNED NOT NULL,
     UNIQUE ("nickname"),
-    PRIMARY KEY ("id")
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("group") REFERENCES "group"("id")
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 CREATE OR REPLACE TABLE "student" (
@@ -38,24 +48,6 @@ CREATE OR REPLACE TABLE "student_account" (
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     FOREIGN KEY ("account") REFERENCES "account"("id")
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
-
-CREATE OR REPLACE TABLE "group" (
-    "id" TINYINT UNSIGNED AUTO_INCREMENT,
-    "name" VARCHAR(64) NOT NULL UNIQUE,
-    PRIMARY KEY ("id")
-);
-
-CREATE OR REPLACE TABLE "account_group" (
-    "account" INTEGER UNSIGNED,
-    "group" TINYINT UNSIGNED,
-    PRIMARY KEY ("account", "group"),
-    FOREIGN KEY ("account") REFERENCES "account"("id")
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    FOREIGN KEY ("group") REFERENCES "group"("id")
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
