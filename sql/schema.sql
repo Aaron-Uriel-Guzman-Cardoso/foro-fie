@@ -22,7 +22,6 @@ CREATE OR REPLACE TABLE "account" (
     "nickname" VARCHAR(64) NOT NULL,
     "desc" VARCHAR(256) NOT NULL,
     "hash" BINARY(32) NOT NULL, 
-    "salt" BINARY(32) NOT NULL,
     "group" TINYINT UNSIGNED NOT NULL,
     UNIQUE ("nickname"),
     PRIMARY KEY ("id"),
