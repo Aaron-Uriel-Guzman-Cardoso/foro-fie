@@ -29,9 +29,10 @@ try {
 } catch (PDOException $e) {
     die("Error al conectar con la base de datos: " . $e->getMessage());
 }
-
 $conn = null;
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -109,6 +110,38 @@ $conn = null;
         .publicacion h3 {
             margin: 0 0 10px;
         }
+
+        .categoria-botones {
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 10px; 
+            margin-top: 10px;
+        }
+
+        .btn-categoria {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: white;
+            background-color: #003366; 
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            width: 200px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-categoria:hover {
+            background-color: #191970; 
+            transform: scale(1.05); 
+}
+
+        .btn-categoria:active {
+            background-color: #004085; 
+}
+
+
     </style>
 </head>
 <body>
@@ -120,17 +153,19 @@ $conn = null;
     <div class="container">
         <!-- Parte izquierda. Categorias -->
         <div class="menu">
-            <h2>Categorías</h2>
-            <ul>
-                <?php if (!empty($categorias)): ?>
-                    <?php foreach ($categorias as $categoria): ?>
-                        <li><a href="#"><?= htmlspecialchars($categoria['name']) ?></a></li>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <li>No hay categorías disponibles</li>
-                <?php endif; ?>
-            </ul>
-        </div>
+    <h2>Categorías</h2>
+    <div class="categoria-botones">
+        <?php if (!empty($categorias)): ?>
+            <?php foreach ($categorias as $categoria): ?>
+                <a href="category.php?id=<?= htmlspecialchars($categoria['id']) ?>" class="btn-categoria">
+                    <?= htmlspecialchars($categoria['name']) ?>
+                </a>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No hay categorías disponibles</p>
+        <?php endif; ?>
+    </div>
+</div>
 
         <!-- Parte derecha. Publicaciones recientes-->
         <div class="contenido">
