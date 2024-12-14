@@ -70,6 +70,12 @@ CREATE OR REPLACE TABLE "group_grant" (
         ON UPDATE CASCADE
 );
 
+CREATE OR REPLACE TABLE "category" (
+    "id" INTEGER UNSIGNED AUTO_INCREMENT,
+    "name" VARCHAR(64) NOT NULL UNIQUE,
+    PRIMARY KEY ("id")
+);
+
 CREATE OR REPLACE TABLE "post" (
     "id" INTEGER UNSIGNED,
     "account" INTEGER UNSIGNED NOT NULL,
@@ -78,6 +84,9 @@ CREATE OR REPLACE TABLE "post" (
     "category" INTEGER UNSIGNED NOT NULL,
     PRIMARY KEY ("id"),
     FOREIGN KEY ("account") REFERENCES "account" ("id")
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+    FOREIGN KEY ("category") REFERENCES "category"("id")
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
@@ -119,10 +128,4 @@ CREATE OR REPLACE TABLE "reply" (
     FOREIGN KEY ("parent") REFERENCES "comment"("id")
         ON DELETE CASCADE
         ON UPDATE CASCADE
-);
-
-CREATE OR REPLACE TABLE "category" (
-    "id" INTEGER UNSIGNED AUTO_INCREMENT,
-    "name" VARCHAR(64) NOT NULL UNIQUE,
-    PRIMARY KEY ("id")
 );
