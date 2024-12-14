@@ -1,4 +1,31 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require 'db.php';
+session_start();
+
+class Account {
+    public $id;
+    public $nickname;
+    public $desc;
+    public $hash;
+    public $group;
+}
+
+if (isset($_POST["nickname"]) && isset($_POST["passwd")) {
+    $passwd = $_POST['passwd'];
+    $query = DB::get()->prepare('
+        SELECT "id", "nickname", "desc", "hash", "group"
+        FROM "account"
+        WHERE "first_name" LIKE :nickname'
+    );
+    $query->execute([':nickname' => $_POST['nickname']]);
+    $user = $query->fetch(PDO::FETCH_CLASS, 'Account');
+    if (password_verify($passwd, $user->$hash)) {
+        echo 'Éxito';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -11,31 +38,11 @@
 <body>
     <form action="index.php" method="POST">
         <label for="nickname">Nombre de usuario: </label>
-        <input type="text" id="nickname" name="nickname">
+        <input type="text" id="nickname" name="nickname"> <br>
         <label for="password">Contraseña: </label>
-        <input type="password" id="password" name="password">
+        <input type="password" id="passwd" name="passwd"> <br>
         <input type="submit" value="Iniciar sesión">
     </form>
-    <?php
-        error_reporting(E_ALL);
-        require 'db.php';
-        $query = NULL;
-        assert(isset($_POST['nickname']) && isset($_POST['password']));
-        if (isset($_POST['user'])) {
-            $query = Hrdb::get()->prepare("SELECT employee_id, first_name, last_name, email, salary FROM employees WHERE first_name LIKE :employee ORDER BY first_name LIMIT 20");
-            $query->execute([':employee' => ('%' . $_POST['employee'] . '%')]);
-        } else {
-            $query = Hrdb::get()->query(" SELECT employee_id, first_name, last_name, email, salary FROM employees ORDER BY first_name LIMIT 20");
-        }
-        include 'table_header_template.html';
-        while ($row = $query->fetch()) {
-            printf('<tr><td><a href="user_info.php?id=%s">%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>' . PHP_EOL,
-                $row['employee_id'], $row['employee_id'], $row['first_name'], $row['last_name'],
-                $row['email'], $row['salary']);
-            
-        }
-        include 'table_footer_template.html';
-        ?>
 
 
     <header>
