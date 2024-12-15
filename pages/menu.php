@@ -4,6 +4,14 @@ $dbname = 'foro_fie';
 $username = 'auriel';
 $password = 'pwd123';
 
+session_start();
+
+/* Nos movemos al login si no hay una sesión iniciada. */
+if (!isset($_SESSION['logged-account'])) {
+    header("Location: index.php");
+    die();
+}
+
 try {
     // Establecer conexion con PDO
     $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
@@ -38,7 +46,7 @@ $conn = null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foro FIE</title>
-    <link rel="stylesheet" href="../templates/styles.css">
+    <link rel="stylesheet" href="/templates/styles.css" type="text/css">
 </head>
 <body>
     <!-- Barra FORO-FIE -->
