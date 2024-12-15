@@ -1,0 +1,230 @@
+/* anuncios.css */
+
+/* Publicaciones */
+.container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #333;
+}
+
+/* Estilos para la barra de navegacion */
+.navbar {
+    width: 100%;
+    background-color: #003366;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5em;
+}
+
+.navbar-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.navbar-buttons .btn {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-shrink: 0;
+}
+
+.navbar-buttons .btn:hover {
+    background-color: #218838;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Contenedor principal */
+.container {
+    padding-top: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Contenido de publicaciones */
+.contenido {
+    width: 100%;
+}
+
+.publicacion {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.publicacion:hover {
+    transform: scale(1.01);
+}
+
+.publicacion h3 {
+    color: #003366;
+    margin-bottom: 10px;
+}
+
+.meta {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.contenido-texto {
+    font-size: 1em;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Sección de Comentarios */
+.comentarios {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.comentarios h4 {
+    margin-bottom: 10px;
+    color: #003366;
+}
+
+.lista-comentarios,
+.lista-respuestas {
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.comentario,
+.respuesta {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.comentario:last-child,
+.respuesta:last-child {
+    border-bottom: none;
+}
+
+.comentario strong,
+.respuesta strong {
+    color: #007BFF;
+}
+
+.comentario p,
+.respuesta p {
+    margin: 5px 0 0 0;
+    color: #333;
+}
+
+/* Indentación adicional para sub-respuestas */
+.lista-respuestas {
+    margin-left: 20px;
+    padding-left: 0;
+    border-left: 1px solid #afafaf;
+}
+
+/* Botón "Responder" */
+.reply-button {
+    background-color: transparent;
+    color: #0d9c3d;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9em;
+    text-decoration: underline;
+}
+
+/* Formulario de Comentarios */
+.form-comentario {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-comentario label {
+    font-weight: bold;
+}
+
+.form-comentario textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-comentario .btn-submit {
+    background-color: #6c757d;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-comentario .btn-submit:hover {
+    background-color: #5a685c;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: -5px;
+}
