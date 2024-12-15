@@ -21,8 +21,7 @@ CREATE OR REPLACE TABLE "account" (
     "id" INTEGER UNSIGNED AUTO_INCREMENT,
     "nickname" VARCHAR(64) NOT NULL,
     "desc" VARCHAR(256) NOT NULL,
-    "hash" BINARY(32) NOT NULL, 
-    "salt" BINARY(32) NOT NULL,
+    "hash" BINARY(60) NOT NULL, 
     "group" TINYINT UNSIGNED NOT NULL,
     UNIQUE ("nickname"),
     PRIMARY KEY ("id"),
@@ -86,7 +85,7 @@ CREATE OR REPLACE TABLE "post" (
     PRIMARY KEY ("id"),
     FOREIGN KEY ("account") REFERENCES "account" ("id")
         ON DELETE CASCADE
-        ON UPDATE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY ("category") REFERENCES "category"("id")
         ON DELETE CASCADE
         ON UPDATE CASCADE
