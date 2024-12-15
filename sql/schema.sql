@@ -77,11 +77,12 @@ CREATE OR REPLACE TABLE "category" (
 );
 
 CREATE OR REPLACE TABLE "post" (
-    "id" INTEGER UNSIGNED,
+    "id" INT UNSIGNED NOT NULL AUTO_INCREMENT;
     "account" INTEGER UNSIGNED NOT NULL,
     "title" VARCHAR(128) NOT NULL,
     "content" TEXT NOT NULL,
     "category" INTEGER UNSIGNED NOT NULL,
+    "created_at" DATETIME DEFAULT CURRENT_TIMESTAMP;
     PRIMARY KEY ("id"),
     FOREIGN KEY ("account") REFERENCES "account" ("id")
         ON DELETE CASCADE
