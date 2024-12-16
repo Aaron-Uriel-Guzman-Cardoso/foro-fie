@@ -107,7 +107,6 @@ function get_all_comments_with_replies($conn, $post_id) {
         return [];
     }
     $placeholders = implode(',', array_fill(0, count($comment_ids), '?'));
-    var_dump($placeholders);
     $stmt_replies = DB::get()->prepare("
         SELECT comment, parent 
         FROM \"reply\"

@@ -66,15 +66,6 @@ try {
                         endforeach;
                     endif;
                     ?>
-                <?php if (!empty($categories)): ?>
-                    <?php foreach ($categories as $categoria): ?>
-                        <a href="<?= urlencode(strtolower($categoria['name'])) ?>.php" class="btn-categoria">
-                            <?= htmlspecialchars($categoria['name']) ?>
-                        </a>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No hay categorías disponibles</p>
-                <?php endif; ?>
             </div>
         </div>
 
