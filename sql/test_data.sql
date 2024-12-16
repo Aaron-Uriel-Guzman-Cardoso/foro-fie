@@ -36,6 +36,6 @@ VALUES
 
 INSERT INTO "post" ("account", "title", "content", "category")
 VALUES
-    ('1', 'Publicación de prueba', 'testasdfghjklñ', '1'),
+    ('1', 'Publicación de prueba', 'testxddfghjklñ', '1'),
     ('2', 'Probandoooo', 'Hola xdVoy a probar saltos 
     de línea\nHola', '2');
