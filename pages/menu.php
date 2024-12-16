@@ -8,36 +8,32 @@ session_start();
 
 /* Nos movemos al login si no hay una sesión iniciada. */
 if (!isset($_SESSION['logged-account'])) {
-    header("Location: index.php");
+    header("Location: /index.php");
     die();
 }
 
+require '../db.php';
+
 try {
-    // Establecer conexion con PDO
-    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Consultar de categorías
-    $query_categorias = "SELECT id, name FROM category ORDER BY name ASC";
-    $stmt_categorias = $conn->prepare($query_categorias);
-    $stmt_categorias->execute();
-    $categorias = $stmt_categorias->fetchAll(PDO::FETCH_ASSOC);
-
-    // Consulta de publicaciones recientes
-    $query_publicaciones = "
-        SELECT p.title, c.name AS categoria, p.account, p.content 
-        FROM post p
-        JOIN category c ON p.category = c.id
-        ORDER BY p.id DESC
-        LIMIT 10";
-    $stmt_publicaciones = $conn->prepare($query_publicaciones);
-    $stmt_publicaciones->execute();
-    $publicaciones = $stmt_publicaciones->fetchAll(PDO::FETCH_ASSOC);
-
+    $categoriesStmt = DB::get()->query('
+        SELECT "id", "name"
+        FROM "category"
+        ORDER BY "name" ASC'
+    );
+    $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    die("Error al conectar con la base de datos: " . $e->getMessage());
+    die("Imposible obtener categorías" . $e->getMessage());
 }
-$conn = null;
+try {
+    $postsStmt = DB::get()->query('
+        SELECT "title", "name" AS "category-name", "account", "content"
+        FROM "post" 
+            JOIN "category" ON "post"."category" = "category"."id"
+        ORDER BY "post"."id" DESC LIMIT 10');
+    $posts = $postsStmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Imposible obtener publicaciones" . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -58,9 +54,20 @@ $conn = null;
         <!-- Parte izquierda. Categorias -->
         <div class="menu">
             <h2>Categorías</h2>
-            <div class="categoria-botones">
-                <?php if (!empty($categorias)): ?>
-                    <?php foreach ($categorias as $categoria): ?>
+                <div class="categoria-botones">
+                    <?php
+                    if (!empty($categories)):
+                        foreach ($categories as $category):
+                    ?>
+                    <a href="posts.php?id=<?=$category['id'];?>&name=<?=$category['name'];?>" class="btn-categoria">
+                            <?= htmlspecialchars($category['name']) ?>
+                        </a>
+                    <?php
+                        endforeach;
+                    endif;
+                    ?>
+                <?php if (!empty($categories)): ?>
+                    <?php foreach ($categories as $categoria): ?>
                         <a href="<?= urlencode(strtolower($categoria['name'])) ?>.php" class="btn-categoria">
                             <?= htmlspecialchars($categoria['name']) ?>
                         </a>
@@ -74,11 +81,11 @@ $conn = null;
         <!-- Parte derecha. Publicaciones recientes-->
         <div class="contenido">
             <h2>Publicaciones recientes</h2>
-            <?php if (!empty($publicaciones)): ?>
-                <?php foreach ($publicaciones as $publicacion): ?>
+            <?php if (!empty($posts)): ?>
+                <?php foreach ($posts as $publicacion): ?>
                     <div class="publicacion">
                         <h3><?= htmlspecialchars($publicacion['title']) ?></h3>
-                        <p><strong>Categoría:</strong> <?= htmlspecialchars($publicacion['categoria']) ?></p>
+                        <p><strong>Categoría:</strong> <?= htmlspecialchars($publicacion['category-name']) ?></p>
                         <p><strong>Contenido:</strong> <?= nl2br(htmlspecialchars($publicacion['content'])) ?></p>
                     </div>
                 <?php endforeach; ?>

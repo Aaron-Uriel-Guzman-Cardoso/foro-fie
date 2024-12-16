@@ -2,15 +2,7 @@
 require 'db.php';
 session_start();
 
-class Account {
-    public $id;
-    public $nickname;
-    public $desc;
-    public $hash;
-    public $group;
-
-    public function __set($name, $value) {}
-}
+require 'account.php';
 
 if (isset($_POST["nickname"]) && isset($_POST["passwd"])) {
     $passwd = $_POST['passwd'];

@@ -33,3 +33,9 @@ VALUES
         '$2y$10$pcIRi5D5MVYWXgh4dNPidukaspHirFkoWqb..KlxUGw2XDC.2NIl2', 2),
     ('test2', 'test2',
         '$2y$10$Sl9JFzHe58Aac9lsu9cjNuWL6ggMLmnx0KD4JR.1c5.REoLWe.gSC', 3);
+
+INSERT INTO "post" ("account", "title", "content", "category")
+VALUES
+    ('1', 'Publicación de prueba', 'testasdfghjklñ', '1'),
+    ('2', 'Probandoooo', 'Hola xdVoy a probar saltos 
+    de línea\nHola', '2');
